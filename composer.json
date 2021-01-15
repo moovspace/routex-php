@@ -1,6 +1,6 @@
 {
-	"name": "moovfun/php-router",
-	"description": "REST API Php router class.",
+	"name": "moovfun/routex-php",
+	"description": "RoutexPhp - Php router, Rest Api (composer project).",
 	"type": "project",
 	"license": "MIT",
 	"require": {
