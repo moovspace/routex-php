@@ -1,5 +1,5 @@
 {
-	"name": "moovfun/routex-php",
+	"name": "moovspace/routex-php",
 	"description": "RoutexPhp - Php router, Rest Api (composer project).",
 	"type": "project",
 	"license": "MIT",
