@@ -33,7 +33,7 @@ composer dump-autoload -o
 composer clearcache
 
 # create new project in dir v1.0
-composer create-project --no-dev moovspace/routex-php=3.0 /var/www/html/router.xx
+composer create-project --no-dev moovspace/routex-php=1.0 /var/www/html/router.xx
 
 # create new project in dir v1.0
 composer create-project --no-dev moovspace/routex-php /var/www/html/router.xx 1.0 --prefer-dist
