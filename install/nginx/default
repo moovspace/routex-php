@@ -1,0 +1,173 @@
+# Run linux
+# sudo sysctl -w net.core.somaxconn=4096
+# Add to server
+# listen 80 backlog=4096;
+
+server_tokens off;
+server_names_hash_bucket_size 64;
+proxy_cache_path /tmp/nxc levels=1:2 keys_zone=my_cache:10m max_size=10g inactive=60m use_temp_path=off;
+
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	root /var/www/html/default;
+	index index.html index.php;
+	server_name _;
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+
+	# Tls redirect
+    # return 301 https://$host$request_uri;
+	# Www to non www
+    # return 301 https://domain.xx$request_uri;
+}
+
+server {
+	listen 443 default_server ssl http2;
+	listen [::]:443 default_server ssl http2;
+	root /var/www/html/default;
+	index index.html index.php;
+	server_name _;
+
+	ssl_certificate     /etc/ssl/certs/ssl-cert-snakeoil.pem;
+	ssl_certificate_key /etc/ssl/private/ssl-cert-snakeoil.key;
+	ssl_protocols       TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+	ssl_ciphers         HIGH:!aNULL:!MD5;
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+}
+
+server {
+	charset utf-8;
+    disable_symlinks off;
+    client_max_body_size 100M;
+	keepalive_timeout   60;
+
+    listen 80;
+    listen [::]:80;
+
+    server_name router.xx;
+    root /var/www/html/router.xx/public;
+    index index.php;
+
+    location / {
+		try_files $uri $uri/ /index.php?url=$uri&$args;
+    }
+
+    location ~ \.php$ {
+		# Enable cache
+		# proxy_cache my_cache;
+
+        # Don't cache it
+        proxy_no_cache 1;
+        proxy_cache_bypass 1;
+        expires -1;
+
+        # Php-fpm
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+
+		# Tcp socket
+		# fastcgi_pass 127.0.0.1:9000;
+		# fastcgi_index index.php;
+		# include fastcgi_params;
+		# fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+		# fastcgi_param HTTP_PROXY "";
+    }
+
+	location = /favicon.ico {
+		rewrite . /favicon/favicon.ico;
+	}
+
+	location ~ /(Cache|cache|install|sql|vendor|.git) {
+		deny all;
+		return 404;
+	}
+
+	location /media {
+		location ~ \.php$ {return 403;}
+	}
+
+	location ~* \.(html|js|css|png|jpg|jpeg|gif|ico|svg|flv|pdf|mp3|mp4|mov)$ {
+		expires 1d;
+		add_header Cache-Control "public, no-transform";
+		fastcgi_hide_header Set-Cookie;
+	}
+
+	location ~* ^.+.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt)$ {
+		access_log        off;
+		expires           max;
+	}
+}
+
+server {
+	charset utf-8;
+    disable_symlinks off;
+    client_max_body_size 100M;
+	keepalive_timeout   60;
+
+	listen 443 ssl http2;
+	listen [::]:443 ssl http2;
+
+	server_name router.xx;
+    root /var/www/html/router.xx/public;
+    index index.php;
+
+	ssl_certificate     /etc/letsencrypt/live/vege.love/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/vege.love/privkey.pem;
+	ssl_protocols       TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+	ssl_ciphers         HIGH:!aNULL:!MD5;
+
+	location / {
+		try_files $uri $uri/ /index.php?url=$uri&$args;
+    }
+
+	location ~ \.php$ {
+		# Enable cache
+		# proxy_cache my_cache;
+
+        # Don't cache it
+        proxy_no_cache 1;
+        proxy_cache_bypass 1;
+        expires -1;
+
+        # Php-fpm
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+
+		# Tcp socket
+		# fastcgi_pass 127.0.0.1:9000;
+		# fastcgi_index index.php;
+		# include fastcgi_params;
+		# fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+		# fastcgi_param HTTP_PROXY "";
+    }
+
+	location = /favicon.ico {
+		rewrite . /favicon/favicon.ico;
+	}
+
+	location ~ /(Cache|cache|install|sql|vendor|.git) {
+		deny all;
+		return 404;
+	}
+
+	location /media {
+		location ~ \.php$ {return 403;}
+	}
+
+	location ~* \.(html|js|css|png|jpg|jpeg|gif|ico|svg|flv|pdf|mp3|mp4|mov)$ {
+		expires 1d;
+		add_header Cache-Control "public, no-transform";
+		fastcgi_hide_header Set-Cookie;
+	}
+
+	location ~* ^.+.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt)$ {
+		access_log        off;
+		expires           max;
+	}
+}

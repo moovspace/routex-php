@@ -1,0 +1,26 @@
+/* @import url('/css/input.css'); */
+
+:root {
+	--max-list-width: 1366px;
+    --color: #1a81f8
+    --bg: #fff;
+}
+
+*{
+	font-family: Exo, Jura, 'Open Sans', Arial, Helvetica, sans-serif;
+	box-sizing: border-box;
+	text-decoration: none;
+	/* Scrollbar color */
+	scrollbar-width: thin;
+	scrollbar-color: #1a81f8 #fff;
+}
+
+html, body {
+	font-size: 16px;
+	float: left;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	min-height: 100vh;
+	overflow-x: hidden;
+}
