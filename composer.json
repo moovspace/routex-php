@@ -32,9 +32,9 @@
 	"minimum-stability": "stable",
 	"prefer-stable": true,
 	"scripts": {
-        "post-root-package-install": [
+		"post-root-package-install": [
 			"@php -r \"echo phpversion();\""
-        ]
+		]
 	},
 	"authors": [
         {
