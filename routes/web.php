@@ -17,5 +17,15 @@ $r->Set('/home/{id}/book/{name}', 'App/Http/Controller/Demo', 'Index', ['POST', 
 // Function
 $r->Set('/phpversion', function(){ echo phpversion(); });
 
+// API Sample
+
+// Create user token (delete after tests)
+$r->Set('/api/token/{id}', 'App/Http/Controller/AuthUser/UserInfo', 'Token');
+
+// Get user info with bearer token
+$r->Set('/api/userinfo', 'App/Http/Controller/AuthUser/UserInfo', 'Index');
+
+// Error page
+
 // Show error page
 $r->ErrorPage();
