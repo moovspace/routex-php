@@ -1,5 +1,5 @@
-# RoutexPhp - Php router, Rest Api (composer)
-Php router class composer project.
+# Rest Api Php Router
+Php router for rest api with composer.
  - Php router class
  - Db class - Mysql pdo with redis cache
  - Send email class with phpmailer
@@ -110,7 +110,7 @@ server {
 mysql -u root -p < /var/www/html/router.xx/install/sql/app.sql
 ```
 
-### RoutexPhp app routes
+### Routex app routes
 ```php
 <?php
 // Redirect (delete line below)
@@ -138,7 +138,7 @@ $r->ErrorPage();
 ?>
 ```
 
-### RoutexPhp page controller
+### Routex page controller
 ```php
 <?php
 namespace App\Http\Controller;
@@ -183,7 +183,7 @@ class Demo
 }
 ```
 
-### RoutexPhp page model
+### Routex page model
 Example with mysql database, send email with smtp, curl requests
 ```php
 <?php
