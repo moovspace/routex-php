@@ -295,7 +295,7 @@ curl -X GET http://router.xx -H "Authorization: Bearer 61e51229-f13c-11ea-9db7-7
 curl -X POST http://router.xx -H "Authorization: Bearer 61e51229-f13c-11ea-9db7-7e44772edd6d"
 
 # POST cookie
-curl -v --cookie -X POST http://router.xx/api/userinfo -H "Authorization: Bearer 61e51229-f13c-11ea-9db7-7e44772edd6d"
+curl -v --cookie cookie.txt -X POST http://router.xx/api/userinfo -H "Authorization: Bearer 61e51229-f13c-11ea-9db7-7e44772edd6d"
 
 # Login
 curl -X POST -d "email=5f567a7968930@woo.xx&pass=password" http://router.xx/api/auth
