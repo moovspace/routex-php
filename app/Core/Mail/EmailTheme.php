@@ -9,7 +9,7 @@ class EmailTheme
 	{
 		if(file_exists($path))
 		{
-			$txt = file_get_contents($_SERVER['DOCUMENT_ROOT'].'/'.ltrim($path,'/'));
+			$txt = file_get_contents($path);
 			return self::CloseTags(self::ReplaceTags($txt, $data));
 		}
 		else
