@@ -72,4 +72,13 @@ class Tags
 		Div [div class="" [>] Hello text[/div]
 		';
 	}
+
+	function Slug($str, $replace = "-")
+	{
+		$str = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
+		$charsArr = array('^', "'", '"', '`', '~');
+        $str = str_replace($charsArr, '', $str);
+        $return = trim(preg_replace('# +#',' ',preg_replace('/[^a-zA-Z0-9\s]/','',strtolower($str))));
+        return str_replace(' ', $replace, $return);
+    }
 }
