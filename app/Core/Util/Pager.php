@@ -6,7 +6,8 @@ use App\Core\Mysql\Db;
 
 class Pager
 {
-	public $MinPerpage = 1;
+	protected $MinPerpage = 1;
+	protected $MaxPage = 1;
 
 	/**
 	 * Minimum perpage value
@@ -212,18 +213,14 @@ class Pager
 	 *
 	 * @return array
 	 */
-	function GetRows()
+	function GetRows($page = 1, $offset = 0, $perpage = 1)
 	{
-		$page = 1;
-		$offset = 0;
-		$perpage = 8;
-
 		if(!empty($_GET['page'])) { $page = (int)$_GET['page']; }
 		if(!empty($_GET['perpage'])) { $perpage = (int)$_GET['perpage']; }
 		if($perpage < $this->MinPerpage) { $perpage = $this->MinPerpage; }
 
 		$arr = [
-			':offset' => self::Offset($page,$perpage),
+			':offset' => self::Offset((int) $page, (int) $perpage),
 			':perpage' => $perpage
 		];
 		$sql = "SELECT * FROM orders ORDER BY id DESC LIMIT :offset,:perpage";
