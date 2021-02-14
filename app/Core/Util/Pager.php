@@ -9,6 +9,17 @@ class Pager
 	public $MinPerpage = 1;
 
 	/**
+	 * Minimum perpage value
+	 *
+	 * @param integer $perpage Records per page
+	 * @return void
+	 */
+	function Perpage(int $perpage = 8)
+	{
+		$this->MinPerpage = $perpage;
+	}
+
+	/**
 	 * Get links
 	 *
 	 * $page Current page
@@ -20,7 +31,7 @@ class Pager
 	 * $next Next page button html
 	 * $back Back page button html
 	 */
-	final function Links(int $page = 1, int $records = 11, int $perpage = 5, bool $subpage = true, int $subpage_nr = 3, array $attributes = ['page', 'perpage','search','edit','delete','id'], $next = 'next <i class="fas fa-chevron-right"></i>', $back = '<i class="fas fa-chevron-left"></i> back ') : string
+	final function Links(int $page = 1, int $records = 11, int $perpage = 1, bool $subpage = true, int $subpage_nr = 3, array $attributes = ['page', 'perpage','search','edit','delete','id'], $next = '<i class="fas fa-chevron-right"></i>', $back = '<i class="fas fa-chevron-left"></i>') : string
 	{
 		if($page < 1) { $page = 1; }
 		if($perpage < $this->MinPerpage) { $perpage = $this->MinPerpage; }
@@ -32,7 +43,7 @@ class Pager
 		$link = '<div class="pager">';
 		$link .= $this->BackLink($page, $back);
 		if($subpage) { $link .= $this->PageLinkLeft($page, $subpage_nr); }
-		if($page != $this->MaxPage) { $link .= $this->CurrPageLink($page, $this->MaxPage); }
+		if($page <= $this->MaxPage) { $link .= $this->CurrPageLink($page, $this->MaxPage); }
 		if($subpage) { $link .= $this->PageLinkRight($page, $subpage_nr); }
 		$link .= $this->NextLink($page, $next);
 		$link .= '</div>';
@@ -189,7 +200,7 @@ class Pager
 	 *
 	 * @return int
 	 */
-	static function GetMaxRows()
+	function GetMaxRows()
 	{
 		$arr = [];
 		$sql = "SELECT COUNT(*) as cnt FROM orders ORDER BY id DESC";
@@ -201,7 +212,7 @@ class Pager
 	 *
 	 * @return array
 	 */
-	static function GetRows()
+	function GetRows()
 	{
 		$page = 1;
 		$offset = 0;
@@ -209,6 +220,7 @@ class Pager
 
 		if(!empty($_GET['page'])) { $page = (int)$_GET['page']; }
 		if(!empty($_GET['perpage'])) { $perpage = (int)$_GET['perpage']; }
+		if($perpage < $this->MinPerpage) { $perpage = $this->MinPerpage; }
 
 		$arr = [
 			':offset' => self::Offset($page,$perpage),
