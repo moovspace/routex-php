@@ -5,7 +5,7 @@ use Exception;
 use App\Core\Mysql\Db;
 
 /**
- * User class
+ * User Info class
  */
 class UserInfo
 {

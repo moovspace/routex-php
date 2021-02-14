@@ -73,7 +73,7 @@ class Tags
 		';
 	}
 
-	function Slug($str, $replace = "-")
+	static function Slug($str, $replace = "-")
 	{
 		$str = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
 		$charsArr = array('^', "'", '"', '`', '~');
