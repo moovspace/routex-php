@@ -5,15 +5,11 @@ class Cart
 {
 	public $Products = [];
 	protected $DeliveryTotal = 0;
-
-	function __construct(float $delivery_cost = 0, float $delivery_min = 0, $delivery_time_min = 60, $delivery_free_on = 0, $delivery_free_from = 0)
-	{
-		$this->DeliveryMin = (float) $delivery_min;
-		$this->DeliveryCost = (float) $delivery_cost;
-		$this->DeliveryFreeFrom = (float) $delivery_free_from;
-		$this->DeliveryFreeOn = (int) $delivery_free_on;
-		$this->DeliveryTime = (int) $delivery_time_min;
-	}
+	public $DeliveryMin = 0;
+	public $DeliveryCost = 0;
+	public $DeliveryFreeFrom = 0;
+	public $DeliveryFreeOn = 0;
+	public $DeliveryTime = 60;
 
 	function Add($product)
 	{
@@ -36,7 +32,7 @@ class Cart
 		foreach ($this->Products as $k => $p) {
 			$cost += $p->ProductCost();
 		}
-		return $cost;
+		return number_format((float) $cost, 2, '.', '');
 	}
 
 	function PackingCost()
@@ -45,23 +41,25 @@ class Cart
 		foreach ($this->Products as $k => $p) {
 			$cost += $p->PackingCost();
 		}
-		return $cost;
+		return number_format((float) $cost, 2, '.', '');
 	}
 
 	function DeliveryCost()
 	{
 		$this->DeliveryTotal = $this->DeliveryCost;
-		if($this->DeliveryFreeOn) {
-			if($this->ProductsCost >= $this->DeliveryFreeFrom) {
+		if($this->DeliveryFreeOn == 1)
+		{
+			if($this->ProductsCost() >= $this->DeliveryFreeFrom)
+			{
 				$this->DeliveryTotal = 0;
 			}
 		}
-		return $this->DeliveryTotal;
+		return number_format((float) $this->DeliveryTotal, 2, '.', '');
 	}
 
 	function TotalCost()
 	{
-		return ( $this->ProductsCost() + $this->PackingCost() + $this->DeliveryCost() );
+		return number_format(( $this->ProductsCost() + $this->PackingCost() + $this->DeliveryCost() ), 2, '.', '');
 	}
 
 	function Hash($pr)
